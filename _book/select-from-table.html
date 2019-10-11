@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 4 Select * FROM table; | PostgreSQL Explained for R-Users and R-Programmers</title>
+  <meta name="description" content="This is a book that explains PostgresSQL for R programmers and helps explain SQL syntax as well." />
+  <meta name="generator" content="bookdown 0.14 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 4 Select * FROM table; | PostgreSQL Explained for R-Users and R-Programmers" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is a book that explains PostgresSQL for R programmers and helps explain SQL syntax as well." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 4 Select * FROM table; | PostgreSQL Explained for R-Users and R-Programmers" />
+  
+  <meta name="twitter:description" content="This is a book that explains PostgresSQL for R programmers and helps explain SQL syntax as well." />
+  
+
+<meta name="author" content="Ben Gonzalez" />
+
+
+<meta name="date" content="2019-10-11" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="introduction.html"/>
+<link rel="next" href="general-queries.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">PostgresSQL in R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Prerequisites</a></li>
+<li class="chapter" data-level="2" data-path="example-data-to-follow-along-with.html"><a href="example-data-to-follow-along-with.html"><i class="fa fa-check"></i><b>2</b> Example data to follow along with</a></li>
+<li class="chapter" data-level="3" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>3</b> Introduction</a></li>
+<li class="chapter" data-level="4" data-path="select-from-table.html"><a href="select-from-table.html"><i class="fa fa-check"></i><b>4</b> Select * FROM table;</a></li>
+<li class="chapter" data-level="5" data-path="general-queries.html"><a href="general-queries.html"><i class="fa fa-check"></i><b>5</b> General Queries</a><ul>
+<li class="chapter" data-level="5.1" data-path="general-queries.html"><a href="general-queries.html#distinct-queries"><i class="fa fa-check"></i><b>5.1</b> Distinct Queries</a></li>
+<li class="chapter" data-level="5.2" data-path="general-queries.html"><a href="general-queries.html#where-queries"><i class="fa fa-check"></i><b>5.2</b> WHERE Queries</a></li>
+<li class="chapter" data-level="5.3" data-path="general-queries.html"><a href="general-queries.html#and-or-not-queries"><i class="fa fa-check"></i><b>5.3</b> AND, OR, NOT Queries</a></li>
+<li class="chapter" data-level="5.4" data-path="general-queries.html"><a href="general-queries.html#insert-queries"><i class="fa fa-check"></i><b>5.4</b> Insert Queries</a></li>
+<li class="chapter" data-level="5.5" data-path="general-queries.html"><a href="general-queries.html#update-queries"><i class="fa fa-check"></i><b>5.5</b> Update Queries</a></li>
+<li class="chapter" data-level="5.6" data-path="general-queries.html"><a href="general-queries.html#delete-queries"><i class="fa fa-check"></i><b>5.6</b> Delete Queries</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="rpostgresql-in-shiny-applications.html"><a href="rpostgresql-in-shiny-applications.html"><i class="fa fa-check"></i><b>6</b> RPostgreSQL in Shiny Applications</a><ul>
+<li class="chapter" data-level="6.1" data-path="rpostgresql-in-shiny-applications.html"><a href="rpostgresql-in-shiny-applications.html#insert-query-from-shiny-application"><i class="fa fa-check"></i><b>6.1</b> Insert Query from Shiny Application</a></li>
+<li class="chapter" data-level="6.2" data-path="rpostgresql-in-shiny-applications.html"><a href="rpostgresql-in-shiny-applications.html#write-table-query-from-shiny-application-to-the-database"><i class="fa fa-check"></i><b>6.2</b> Write Table Query from Shiny Application to the Database</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">PostgreSQL Explained for R-Users and R-Programmers</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="select-from-table" class="section level1">
+<h1><span class="header-section-number">Chapter 4</span> Select * FROM table;</h1>
+<p>Here we are querying the entire table and bringing back all of the values.</p>
+<pre><code>## &lt;PostgreSQLDriver&gt;</code></pre>
+<p><strong>Teachers</strong></p>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> teachers</code></pre></div>
+<div class="knitsql-table">
+<table>
+<caption><span id="tab:unnamed-chunk-15">Table 4.1: </span>6 records</caption>
+<thead>
+<tr class="header">
+<th align="left">id</th>
+<th align="left">first_name</th>
+<th align="left">last_name</th>
+<th align="left">school</th>
+<th align="left">hire_date</th>
+<th align="right">salary</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">1</td>
+<td align="left">Janet</td>
+<td align="left">Smith</td>
+<td align="left">F.D. Roosevelt HS</td>
+<td align="left">2011-10-30</td>
+<td align="right">36200</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="left">Lee</td>
+<td align="left">Reynolds</td>
+<td align="left">F.D. Roosevelt HS</td>
+<td align="left">1993-05-22</td>
+<td align="right">65000</td>
+</tr>
+<tr class="odd">
+<td align="left">3</td>
+<td align="left">Samuel</td>
+<td align="left">Cole</td>
+<td align="left">Myers Middle School</td>
+<td align="left">2005-08-01</td>
+<td align="right">43500</td>
+</tr>
+<tr class="even">
+<td align="left">4</td>
+<td align="left">Samantha</td>
+<td align="left">Bush</td>
+<td align="left">Myers Middle School</td>
+<td align="left">2011-10-30</td>
+<td align="right">36200</td>
+</tr>
+<tr class="odd">
+<td align="left">5</td>
+<td align="left">Betty</td>
+<td align="left">Diaz</td>
+<td align="left">Myers Middle School</td>
+<td align="left">2005-08-30</td>
+<td align="right">43500</td>
+</tr>
+<tr class="even">
+<td align="left">6</td>
+<td align="left">Kathleen</td>
+<td align="left">Roush</td>
+<td align="left">F.D. Roosevelt HS</td>
+<td align="left">2010-10-22</td>
+<td align="right">38500</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Detroit</strong></p>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> detroit</code></pre></div>
+<div class="knitsql-table">
+<table>
+<caption><span id="tab:unnamed-chunk-16">Table 4.2: </span>Displaying records 1 - 10</caption>
+<thead>
+<tr class="header">
+<th align="left">Year</th>
+<th align="right">FTP</th>
+<th align="right">UEMP</th>
+<th align="right">MAN</th>
+<th align="right">LIC</th>
+<th align="right">GR</th>
+<th align="right">CLEAR</th>
+<th align="right">WM</th>
+<th align="right">NMAN</th>
+<th align="right">GOV</th>
+<th align="right">HE</th>
+<th align="right">WE</th>
+<th align="right">HOM</th>
+<th align="right">ACC</th>
+<th align="right">ASR</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">1961</td>
+<td align="right">320</td>
+<td align="right">11.0</td>
+<td align="right">455.5</td>
+<td align="right">178.50</td>
+<td align="right">215.98</td>
+<td align="right">93.4</td>
+<td align="right">558724</td>
+<td align="right">538.1</td>
+<td align="right">133.9</td>
+<td align="right">2.98</td>
+<td align="right">117.18</td>
+<td align="right">8.60</td>
+<td align="right">39.17</td>
+<td align="right">306.18</td>
+</tr>
+<tr class="even">
+<td align="left">1962</td>
+<td align="right">320</td>
+<td align="right">7.0</td>
+<td align="right">480.2</td>
+<td align="right">156.41</td>
+<td align="right">180.48</td>
+<td align="right">88.5</td>
+<td align="right">538584</td>
+<td align="right">547.6</td>
+<td align="right">137.6</td>
+<td align="right">3.09</td>
+<td align="right">134.02</td>
+<td align="right">8.90</td>
+<td align="right">40.27</td>
+<td align="right">315.16</td>
+</tr>
+<tr class="odd">
+<td align="left">1963</td>
+<td align="right">320</td>
+<td align="right">5.2</td>
+<td align="right">506.1</td>
+<td align="right">198.02</td>
+<td align="right">209.57</td>
+<td align="right">94.4</td>
+<td align="right">519171</td>
+<td align="right">562.8</td>
+<td align="right">143.6</td>
+<td align="right">3.23</td>
+<td align="right">141.68</td>
+<td align="right">8.52</td>
+<td align="right">45.31</td>
+<td align="right">277.53</td>
+</tr>
+<tr class="even">
+<td align="left">1964</td>
+<td align="right">320</td>
+<td align="right">4.3</td>
+<td align="right">535.8</td>
+<td align="right">222.10</td>
+<td align="right">231.67</td>
+<td align="right">92.0</td>
+<td align="right">500457</td>
+<td align="right">591.0</td>
+<td align="right">150.3</td>
+<td align="right">3.33</td>
+<td align="right">147.98</td>
+<td align="right">8.89</td>
+<td align="right">49.51</td>
+<td align="right">234.07</td>
+</tr>
+<tr class="odd">
+<td align="left">1965</td>
+<td align="right">320</td>
+<td align="right">3.5</td>
+<td align="right">576.0</td>
+<td align="right">301.92</td>
+<td align="right">297.65</td>
+<td align="right">91.0</td>
+<td align="right">482418</td>
+<td align="right">626.1</td>
+<td align="right">164.3</td>
+<td align="right">3.46</td>
+<td align="right">159.85</td>
+<td align="right">13.07</td>
+<td align="right">55.05</td>
+<td align="right">230.84</td>
+</tr>
+<tr class="even">
+<td align="left">1966</td>
+<td align="right">320</td>
+<td align="right">3.2</td>
+<td align="right">601.7</td>
+<td align="right">391.22</td>
+<td align="right">367.62</td>
+<td align="right">87.4</td>
+<td align="right">465029</td>
+<td align="right">659.8</td>
+<td align="right">179.5</td>
+<td align="right">3.60</td>
+<td align="right">157.19</td>
+<td align="right">14.57</td>
+<td align="right">53.90</td>
+<td align="right">217.99</td>
+</tr>
+<tr class="odd">
+<td align="left">1967</td>
+<td align="right">320</td>
+<td align="right">4.1</td>
+<td align="right">577.3</td>
+<td align="right">665.56</td>
+<td align="right">616.54</td>
+<td align="right">88.3</td>
+<td align="right">448267</td>
+<td align="right">686.2</td>
+<td align="right">187.5</td>
+<td align="right">3.73</td>
+<td align="right">155.29</td>
+<td align="right">21.36</td>
+<td align="right">50.62</td>
+<td align="right">286.11</td>
+</tr>
+<tr class="even">
+<td align="left">1968</td>
+<td align="right">320</td>
+<td align="right">3.9</td>
+<td align="right">596.9</td>
+<td align="right">1131.21</td>
+<td align="right">1029.75</td>
+<td align="right">86.1</td>
+<td align="right">432109</td>
+<td align="right">699.6</td>
+<td align="right">195.4</td>
+<td align="right">2.91</td>
+<td align="right">131.75</td>
+<td align="right">28.03</td>
+<td align="right">51.47</td>
+<td align="right">291.59</td>
+</tr>
+<tr class="odd">
+<td align="left">1969</td>
+<td align="right">320</td>
+<td align="right">3.6</td>
+<td align="right">613.5</td>
+<td align="right">837.60</td>
+<td align="right">786.23</td>
+<td align="right">79.0</td>
+<td align="right">416533</td>
+<td align="right">729.9</td>
+<td align="right">210.3</td>
+<td align="right">4.25</td>
+<td align="right">178.74</td>
+<td align="right">31.49</td>
+<td align="right">49.16</td>
+<td align="right">320.39</td>
+</tr>
+<tr class="even">
+<td align="left">1970</td>
+<td align="right">320</td>
+<td align="right">7.1</td>
+<td align="right">569.3</td>
+<td align="right">794.90</td>
+<td align="right">713.77</td>
+<td align="right">73.9</td>
+<td align="right">401518</td>
+<td align="right">757.8</td>
+<td align="right">223.8</td>
+<td align="right">4.47</td>
+<td align="right">178.30</td>
+<td align="right">37.39</td>
+<td align="right">45.80</td>
+<td align="right">323.03</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Student</strong></p>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> student</code></pre></div>
+<div class="knitsql-table">
+<table>
+<caption><span id="tab:unnamed-chunk-17">Table 4.3: </span>Displaying records 1 - 10</caption>
+<thead>
+<tr class="header">
+<th align="left">school</th>
+<th align="left">sex</th>
+<th align="right">age</th>
+<th align="left">address</th>
+<th align="left">famsize</th>
+<th align="left">Pstatus</th>
+<th align="right">Medu</th>
+<th align="right">Fedu</th>
+<th align="left">Mjob</th>
+<th align="left">Fjob</th>
+<th align="left">reason</th>
+<th align="left">guardian</th>
+<th align="right">traveltime</th>
+<th align="right">studytime</th>
+<th align="right">failures</th>
+<th align="left">schoolsup</th>
+<th align="left">famsup</th>
+<th align="left">paid</th>
+<th align="left">activities</th>
+<th align="left">nursery</th>
+<th align="left">higher</th>
+<th align="left">internet</th>
+<th align="left">romantic</th>
+<th align="right">famrel</th>
+<th align="right">freetime</th>
+<th align="right">goout</th>
+<th align="right">Dalc</th>
+<th align="right">Walc</th>
+<th align="right">health</th>
+<th align="right">absences</th>
+<th align="right">G1</th>
+<th align="right">G2</th>
+<th align="right">G3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">GP</td>
+<td align="left">F</td>
+<td align="right">18</td>
+<td align="left">U</td>
+<td align="left">GT3</td>
+<td align="left">A</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="left">at_home</td>
+<td align="left">teacher</td>
+<td align="left">course</td>
+<td align="left">mother</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="left">yes</td>
+<td align="left">no</td>
+<td align="left">no</td>
+<td align="left">no</td>
+<td align="left">yes</td>
+<td align="left">yes</td>
+<td align="left">no</td>
+<td align="left">no</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">6</td>
+<td align="right">5</td>
+<td align="right">6</td>
+<td align="right">6</td>
+</tr>
+<tr class="even">
+<td align="left">GP</td>
+<td align="left">F</td>
+<td align="right">17</td>
+<td align="left">U</td>
+<td align="left">GT3</td>
+<td align="left">T</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="left">at_home</td>
+<td align="left">other</td>
+<td align="left">course</td>
+<td align="left">father</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="left">no</td>
+<td align="left">yes</td>
+<td align="left">no</td>
+<td align="left">no</td>
+<td align="left">no</td>
+<td align="left">yes</td>
+<td align="left">yes</td>
+<td align="left">no</td>
+<td align="right">5</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">GP</td>
+<td align="left">F</td>
+<td align="right">15</td>
+<td align="left">U</td>
+<td align="left">LE3</td>
+<td align="left">T</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="left">at_home</td>
+<td align="left">other</td>
+<td align="left">other</td>
+<td align="left">mother</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="left">yes</td>
+<td align="left">no</td>
+<td align="left">yes</td>
+<td align="left">no</td>
+<td align="left">yes</td>
+<td align="left">yes</td>
+<td align="left">yes</td>
+<td align="left">no</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">10</td>
+<td align="right">7</td>
+<td align="right">8</td>
+<td align="right">10</td>
+</tr>
+<tr class="even">
+<td align="left">GP</td>
+<td align="left">F</td>
+<td align="right">15</td>
+<td align="left">U</td>
+<td align="left">GT3</td>
+<td align="left">T</td>
+<td align="right">4</td>
+<td align="right">2</td>
+<td align="left">health</td>
+<td align="left">services</td>
+<td align="left">home</td>
+<td align="left">mother</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">0</td>
+<td align="left">no</td>
+<td align="left">yes</td>
+<td align="left">yes</td>
+<td align="left">yes</td>
+<td align="left">yes</td>
+<td align="left">yes</td>
+<td align="left">yes</td>
+<td align="left">yes</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">5</td>
+<td align="right">2</td>
+<td align="right">15</td>
+<td align="right">14</td>
+<td align="right">15</td>
+</tr>
+<tr class="odd">
+<td align="left">GP</td>
+<td align="left">F</td>
+<td align="right">16</td>
+<td align="left">U</td>
+<td align="left">GT3</td>
+<td align="left">T</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="left">other</td>
+<td align="left">other</td>
+<td align="left">home</td>
+<td align="left">father</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="left">no</td>
+<td align="left">yes</td>
+<td align="left">yes</td>
+<td align="left">no</td>
+<td align="left">yes</td>
+<td align="left">yes</td>
+<td align="left">no</td>
+<td align="left">no</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">5</td>
+<td align="right">4</td>
+<td align="right">6</td>
+<td align="right">10</td>
+<td align="right">10</td>
+</tr>
+<tr class="even">
+<td align="left">GP</td>
+<td align="left">M</td>
+<td align="right">16</td>
+<td align="left">U</td>
+<td align="left">LE3</td>
+<td align="left">T</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="left">services</td>
+<td align="left">other</td>
+<td align="left">reputation</td>
+<td align="left">mother</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="left">no</td>
+<td align="left">yes</td>
+<td align="left">yes</td>
+<td align="left">yes</td>
+<td align="left">yes</td>
+<td align="left">yes</td>
+<td align="left">yes</td>
+<td align="left">no</td>
+<td align="right">5</td>
+<td align="right">4</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">5</td>
+<td align="right">10</td>
+<td align="right">15</td>
+<td align="right">15</td>
+<td align="right">15</td>
+</tr>
+<tr class="odd">
+<td align="left">GP</td>
+<td align="left">M</td>
+<td align="right">16</td>
+<td align="left">U</td>
+<td align="left">LE3</td>
+<td align="left">T</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="left">other</td>
+<td align="left">other</td>
+<td align="left">home</td>
+<td align="left">mother</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="left">no</td>
+<td align="left">no</td>
+<td align="left">no</td>
+<td align="left">no</td>
+<td align="left">yes</td>
+<td align="left">yes</td>
+<td align="left">yes</td>
+<td align="left">no</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">0</td>
+<td align="right">12</td>
+<td align="right">12</td>
+<td align="right">11</td>
+</tr>
+<tr class="even">
+<td align="left">GP</td>
+<td align="left">F</td>
+<td align="right">17</td>
+<td align="left">U</td>
+<td align="left">GT3</td>
+<td align="left">A</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="left">other</td>
+<td align="left">teacher</td>
+<td align="left">home</td>
+<td align="left">mother</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="left">yes</td>
+<td align="left">yes</td>
+<td align="left">no</td>
+<td align="left">no</td>
+<td align="left">yes</td>
+<td align="left">yes</td>
+<td align="left">no</td>
+<td align="left">no</td>
+<td align="right">4</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">6</td>
+<td align="right">6</td>
+<td align="right">5</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">GP</td>
+<td align="left">M</td>
+<td align="right">15</td>
+<td align="left">U</td>
+<td align="left">LE3</td>
+<td align="left">A</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="left">services</td>
+<td align="left">other</td>
+<td align="left">home</td>
+<td align="left">mother</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="left">no</td>
+<td align="left">yes</td>
+<td align="left">yes</td>
+<td align="left">no</td>
+<td align="left">yes</td>
+<td align="left">yes</td>
+<td align="left">yes</td>
+<td align="left">no</td>
+<td align="right">4</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">16</td>
+<td align="right">18</td>
+<td align="right">19</td>
+</tr>
+<tr class="even">
+<td align="left">GP</td>
+<td align="left">M</td>
+<td align="right">15</td>
+<td align="left">U</td>
+<td align="left">GT3</td>
+<td align="left">T</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="left">other</td>
+<td align="left">other</td>
+<td align="left">home</td>
+<td align="left">mother</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="left">no</td>
+<td align="left">yes</td>
+<td align="left">yes</td>
+<td align="left">yes</td>
+<td align="left">yes</td>
+<td align="left">yes</td>
+<td align="left">yes</td>
+<td align="left">no</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">5</td>
+<td align="right">0</td>
+<td align="right">14</td>
+<td align="right">15</td>
+<td align="right">15</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="introduction.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="general-queries.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["SQLQueries.pdf", "SQLQueries.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

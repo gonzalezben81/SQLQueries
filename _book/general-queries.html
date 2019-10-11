@@ -1,0 +1,4296 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 5 General Queries | PostgreSQL Explained for R-Users and R-Programmers</title>
+  <meta name="description" content="This is a book that explains PostgresSQL for R programmers and helps explain SQL syntax as well." />
+  <meta name="generator" content="bookdown 0.14 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 5 General Queries | PostgreSQL Explained for R-Users and R-Programmers" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is a book that explains PostgresSQL for R programmers and helps explain SQL syntax as well." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 5 General Queries | PostgreSQL Explained for R-Users and R-Programmers" />
+  
+  <meta name="twitter:description" content="This is a book that explains PostgresSQL for R programmers and helps explain SQL syntax as well." />
+  
+
+<meta name="author" content="Ben Gonzalez" />
+
+
+<meta name="date" content="2019-10-11" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="select-from-table.html"/>
+<link rel="next" href="rpostgresql-in-shiny-applications.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">PostgresSQL in R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Prerequisites</a></li>
+<li class="chapter" data-level="2" data-path="example-data-to-follow-along-with.html"><a href="example-data-to-follow-along-with.html"><i class="fa fa-check"></i><b>2</b> Example data to follow along with</a></li>
+<li class="chapter" data-level="3" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>3</b> Introduction</a></li>
+<li class="chapter" data-level="4" data-path="select-from-table.html"><a href="select-from-table.html"><i class="fa fa-check"></i><b>4</b> Select * FROM table;</a></li>
+<li class="chapter" data-level="5" data-path="general-queries.html"><a href="general-queries.html"><i class="fa fa-check"></i><b>5</b> General Queries</a><ul>
+<li class="chapter" data-level="5.1" data-path="general-queries.html"><a href="general-queries.html#distinct-queries"><i class="fa fa-check"></i><b>5.1</b> Distinct Queries</a></li>
+<li class="chapter" data-level="5.2" data-path="general-queries.html"><a href="general-queries.html#where-queries"><i class="fa fa-check"></i><b>5.2</b> WHERE Queries</a></li>
+<li class="chapter" data-level="5.3" data-path="general-queries.html"><a href="general-queries.html#and-or-not-queries"><i class="fa fa-check"></i><b>5.3</b> AND, OR, NOT Queries</a></li>
+<li class="chapter" data-level="5.4" data-path="general-queries.html"><a href="general-queries.html#insert-queries"><i class="fa fa-check"></i><b>5.4</b> Insert Queries</a></li>
+<li class="chapter" data-level="5.5" data-path="general-queries.html"><a href="general-queries.html#update-queries"><i class="fa fa-check"></i><b>5.5</b> Update Queries</a></li>
+<li class="chapter" data-level="5.6" data-path="general-queries.html"><a href="general-queries.html#delete-queries"><i class="fa fa-check"></i><b>5.6</b> Delete Queries</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="rpostgresql-in-shiny-applications.html"><a href="rpostgresql-in-shiny-applications.html"><i class="fa fa-check"></i><b>6</b> RPostgreSQL in Shiny Applications</a><ul>
+<li class="chapter" data-level="6.1" data-path="rpostgresql-in-shiny-applications.html"><a href="rpostgresql-in-shiny-applications.html#insert-query-from-shiny-application"><i class="fa fa-check"></i><b>6.1</b> Insert Query from Shiny Application</a></li>
+<li class="chapter" data-level="6.2" data-path="rpostgresql-in-shiny-applications.html"><a href="rpostgresql-in-shiny-applications.html#write-table-query-from-shiny-application-to-the-database"><i class="fa fa-check"></i><b>6.2</b> Write Table Query from Shiny Application to the Database</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">PostgreSQL Explained for R-Users and R-Programmers</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="general-queries" class="section level1">
+<h1><span class="header-section-number">Chapter 5</span> General Queries</h1>
+<p>Here we will make a few queries to the database that are general in nature. General queries are ones where we want to select particular columns and also where we want to remove or delete items from the database.</p>
+<div id="distinct-queries" class="section level2">
+<h2><span class="header-section-number">5.1</span> Distinct Queries</h2>
+<p>Here we will use distinct to look at the distinct values in a particular column. This allows us to get a high-level overview of what our data looks like.</p>
+<p><strong>Teachers</strong></p>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="kw">distinct</span> school <span class="kw">from</span> teachers;</code></pre></div>
+<div class="knitsql-table">
+<table>
+<caption><span id="tab:unnamed-chunk-18">Table 5.1: </span>2 records</caption>
+<thead>
+<tr class="header">
+<th align="left">school</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Myers Middle School</td>
+</tr>
+<tr class="even">
+<td align="left">F.D. Roosevelt HS</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Student</strong></p>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">select</span> <span class="kw">distinct</span> school <span class="kw">from</span> student</code></pre></div>
+<div class="knitsql-table">
+<table>
+<caption><span id="tab:unnamed-chunk-19">Table 5.2: </span>2 records</caption>
+<thead>
+<tr class="header">
+<th align="left">school</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">MS</td>
+</tr>
+<tr class="even">
+<td align="left">GP</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Next we can order our data in a particular way as well.</p>
+<p>Notice that there is something very peculiar about this SQL statement. If we write it out as a normal SQL statement it will not work.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">RPostgreSQL<span class="op">::</span><span class="kw">dbGetQuery</span>(<span class="dt">conn =</span> con,<span class="dt">statement =</span> <span class="st">&#39;select Medu from student;&#39;</span>)</code></pre></div>
+<pre><code>## Error in postgresqlExecStatement(conn, statement, ...) : 
+##   RS-DBI driver: (could not Retrieve the result : ERROR:  column &quot;medu&quot; does not exist
+## LINE 1: select Medu from student;
+##                ^
+## HINT:  Perhaps you meant to reference the column &quot;student.Medu&quot; or the column &quot;student.Fedu&quot;.
+## )</code></pre>
+<pre><code>## Warning in postgresqlQuickSQL(conn, statement, ...): Could not create
+## execute: select Medu from student;</code></pre>
+<pre><code>## NULL</code></pre>
+<p>Instead we are required to utilize quotes around the column names since it is Camelbacked: e.g. Medu vs. medu</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">RPostgreSQL<span class="op">::</span><span class="kw">dbGetQuery</span>(<span class="dt">conn =</span> con, <span class="dt">statement =</span> <span class="st">&quot;select distinct </span><span class="ch">\&quot;</span><span class="st">Medu</span><span class="ch">\&quot;</span><span class="st"> from student;&quot;</span>)</code></pre></div>
+<pre><code>##   Medu
+## 1    0
+## 2    1
+## 3    3
+## 4    2
+## 5    4</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">RPostgreSQL<span class="op">::</span><span class="kw">dbGetQuery</span>(<span class="dt">conn =</span> con,<span class="dt">statement =</span> <span class="st">&#39;select &quot;school&quot;,&quot;G3&quot; from student order by &quot;G3&quot; desc limit 10;&#39;</span>)</code></pre></div>
+<pre><code>##    school G3
+## 1      GP 20
+## 2      GP 19
+## 3      GP 19
+## 4      MS 19
+## 5      GP 19
+## 6      GP 19
+## 7      GP 18
+## 8      GP 18
+## 9      GP 18
+## 10     GP 18</code></pre>
+</div>
+<div id="where-queries" class="section level2">
+<h2><span class="header-section-number">5.2</span> WHERE Queries</h2>
+<p>Where Clause in SQL</p>
+<p>Here we are select the schools and the G3 grade where G3 is greater than 15.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">RPostgreSQL<span class="op">::</span><span class="kw">dbGetQuery</span>(<span class="dt">conn =</span> con, <span class="dt">statement =</span> <span class="st">&quot;select </span><span class="ch">\&quot;</span><span class="st">school</span><span class="ch">\&quot;</span><span class="st">,</span><span class="ch">\&quot;</span><span class="st">G3</span><span class="ch">\&quot;</span><span class="st"> from student where </span><span class="ch">\&quot;</span><span class="st">G3</span><span class="ch">\&quot;</span><span class="st">&gt;15 limit 10;&quot;</span>)</code></pre></div>
+<pre><code>##    school G3
+## 1      GP 19
+## 2      GP 16
+## 3      GP 16
+## 4      GP 17
+## 5      GP 16
+## 6      GP 18
+## 7      GP 18
+## 8      GP 20
+## 9      GP 16
+## 10     GP 16</code></pre>
+<p>Here we are select the schools and the G3 grade where G3 is equal to 4. Utilizing the operators &gt;,&lt;,= allows us to filter our data and retrieve the data we want to look at.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">RPostgreSQL<span class="op">::</span><span class="kw">dbGetQuery</span>(<span class="dt">conn =</span> con,<span class="dt">statement =</span> <span class="st">&#39;select &quot;school&quot;,&quot;G3&quot; from student where &quot;G3&quot;=4;&#39;</span>)</code></pre></div>
+</div>
+<div id="and-or-not-queries" class="section level2">
+<h2><span class="header-section-number">5.3</span> AND, OR, NOT Queries</h2>
+<p>SQL Queries with <strong>And, OR, NOT</strong>.</p>
+<p><strong>AND</strong></p>
+<p>Here we only return one row where G3 = 4 and Medu = 4.</p>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">select</span> * <span class="kw">from</span> student <span class="kw">where</span> <span class="ot">&quot;G3&quot;</span>=<span class="dv">4</span> <span class="kw">AND</span> <span class="ot">&quot;Medu&quot;</span>=<span class="dv">4</span>;</code></pre></div>
+<div class="knitsql-table">
+<table>
+<caption><span id="tab:unnamed-chunk-25">Table 5.3: </span>1 records</caption>
+<thead>
+<tr class="header">
+<th align="left">school</th>
+<th align="left">sex</th>
+<th align="right">age</th>
+<th align="left">address</th>
+<th align="left">famsize</th>
+<th align="left">Pstatus</th>
+<th align="right">Medu</th>
+<th align="right">Fedu</th>
+<th align="left">Mjob</th>
+<th align="left">Fjob</th>
+<th align="left">reason</th>
+<th align="left">guardian</th>
+<th align="right">traveltime</th>
+<th align="right">studytime</th>
+<th align="right">failures</th>
+<th align="left">schoolsup</th>
+<th align="left">famsup</th>
+<th align="left">paid</th>
+<th align="left">activities</th>
+<th align="left">nursery</th>
+<th align="left">higher</th>
+<th align="left">internet</th>
+<th align="left">romantic</th>
+<th align="right">famrel</th>
+<th align="right">freetime</th>
+<th align="right">goout</th>
+<th align="right">Dalc</th>
+<th align="right">Walc</th>
+<th align="right">health</th>
+<th align="right">absences</th>
+<th align="right">G1</th>
+<th align="right">G2</th>
+<th align="right">G3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">GP</td>
+<td align="left">F</td>
+<td align="right">17</td>
+<td align="left">U</td>
+<td align="left">GT3</td>
+<td align="left">T</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="left">other</td>
+<td align="left">other</td>
+<td align="left">reputation</td>
+<td align="left">mother</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="left">no</td>
+<td align="left">no</td>
+<td align="left">yes</td>
+<td align="left">no</td>
+<td align="left">yes</td>
+<td align="left">yes</td>
+<td align="left">yes</td>
+<td align="left">yes</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">5</td>
+<td align="right">2</td>
+<td align="right">4</td>
+<td align="right">1</td>
+<td align="right">22</td>
+<td align="right">6</td>
+<td align="right">6</td>
+<td align="right">4</td>
+</tr>
+</tbody>
+</table>
+</div>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+school
+</th>
+<th style="text-align:left;">
+sex
+</th>
+<th style="text-align:right;">
+age
+</th>
+<th style="text-align:left;">
+address
+</th>
+<th style="text-align:left;">
+famsize
+</th>
+<th style="text-align:left;">
+Pstatus
+</th>
+<th style="text-align:right;">
+Medu
+</th>
+<th style="text-align:right;">
+Fedu
+</th>
+<th style="text-align:left;">
+Mjob
+</th>
+<th style="text-align:left;">
+Fjob
+</th>
+<th style="text-align:left;">
+reason
+</th>
+<th style="text-align:left;">
+guardian
+</th>
+<th style="text-align:right;">
+traveltime
+</th>
+<th style="text-align:right;">
+studytime
+</th>
+<th style="text-align:right;">
+failures
+</th>
+<th style="text-align:left;">
+schoolsup
+</th>
+<th style="text-align:left;">
+famsup
+</th>
+<th style="text-align:left;">
+paid
+</th>
+<th style="text-align:left;">
+activities
+</th>
+<th style="text-align:left;">
+nursery
+</th>
+<th style="text-align:left;">
+higher
+</th>
+<th style="text-align:left;">
+internet
+</th>
+<th style="text-align:left;">
+romantic
+</th>
+<th style="text-align:right;">
+famrel
+</th>
+<th style="text-align:right;">
+freetime
+</th>
+<th style="text-align:right;">
+goout
+</th>
+<th style="text-align:right;">
+Dalc
+</th>
+<th style="text-align:right;">
+Walc
+</th>
+<th style="text-align:right;">
+health
+</th>
+<th style="text-align:right;">
+absences
+</th>
+<th style="text-align:right;">
+G1
+</th>
+<th style="text-align:right;">
+G2
+</th>
+<th style="text-align:right;">
+G3
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+GP
+</td>
+<td style="text-align:left;">
+F
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:left;">
+U
+</td>
+<td style="text-align:left;">
+GT3
+</td>
+<td style="text-align:left;">
+T
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+other
+</td>
+<td style="text-align:left;">
+other
+</td>
+<td style="text-align:left;">
+reputation
+</td>
+<td style="text-align:left;">
+mother
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+4
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>OR</strong></p>
+<p>Here we return 10 rows where G3 = 4 or Mother’s Education = 4. This helps us to filter and sort data when we want to find something in particular.</p>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">select</span> * <span class="kw">from</span> student <span class="kw">where</span> <span class="ot">&quot;G3&quot;</span>=<span class="dv">4</span> <span class="kw">OR</span> <span class="ot">&quot;Medu&quot;</span>=<span class="dv">4</span> <span class="kw">LIMIT</span> <span class="dv">10</span>;</code></pre></div>
+<div class="knitsql-table">
+<table>
+<caption>
+<span id="tab:unnamed-chunk-27">Table 5.4: </span>Displaying records 1 - 10
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+school
+</th>
+<th style="text-align:left;">
+sex
+</th>
+<th style="text-align:right;">
+age
+</th>
+<th style="text-align:left;">
+address
+</th>
+<th style="text-align:left;">
+famsize
+</th>
+<th style="text-align:left;">
+Pstatus
+</th>
+<th style="text-align:right;">
+Medu
+</th>
+<th style="text-align:right;">
+Fedu
+</th>
+<th style="text-align:left;">
+Mjob
+</th>
+<th style="text-align:left;">
+Fjob
+</th>
+<th style="text-align:left;">
+reason
+</th>
+<th style="text-align:left;">
+guardian
+</th>
+<th style="text-align:right;">
+traveltime
+</th>
+<th style="text-align:right;">
+studytime
+</th>
+<th style="text-align:right;">
+failures
+</th>
+<th style="text-align:left;">
+schoolsup
+</th>
+<th style="text-align:left;">
+famsup
+</th>
+<th style="text-align:left;">
+paid
+</th>
+<th style="text-align:left;">
+activities
+</th>
+<th style="text-align:left;">
+nursery
+</th>
+<th style="text-align:left;">
+higher
+</th>
+<th style="text-align:left;">
+internet
+</th>
+<th style="text-align:left;">
+romantic
+</th>
+<th style="text-align:right;">
+famrel
+</th>
+<th style="text-align:right;">
+freetime
+</th>
+<th style="text-align:right;">
+goout
+</th>
+<th style="text-align:right;">
+Dalc
+</th>
+<th style="text-align:right;">
+Walc
+</th>
+<th style="text-align:right;">
+health
+</th>
+<th style="text-align:right;">
+absences
+</th>
+<th style="text-align:right;">
+G1
+</th>
+<th style="text-align:right;">
+G2
+</th>
+<th style="text-align:right;">
+G3
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+GP
+</td>
+<td style="text-align:left;">
+F
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:left;">
+U
+</td>
+<td style="text-align:left;">
+GT3
+</td>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+at_home
+</td>
+<td style="text-align:left;">
+teacher
+</td>
+<td style="text-align:left;">
+course
+</td>
+<td style="text-align:left;">
+mother
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GP
+</td>
+<td style="text-align:left;">
+F
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:left;">
+U
+</td>
+<td style="text-align:left;">
+GT3
+</td>
+<td style="text-align:left;">
+T
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+health
+</td>
+<td style="text-align:left;">
+services
+</td>
+<td style="text-align:left;">
+home
+</td>
+<td style="text-align:left;">
+mother
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:right;">
+15
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GP
+</td>
+<td style="text-align:left;">
+M
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:left;">
+U
+</td>
+<td style="text-align:left;">
+LE3
+</td>
+<td style="text-align:left;">
+T
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+services
+</td>
+<td style="text-align:left;">
+other
+</td>
+<td style="text-align:left;">
+reputation
+</td>
+<td style="text-align:left;">
+mother
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+15
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GP
+</td>
+<td style="text-align:left;">
+F
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:left;">
+U
+</td>
+<td style="text-align:left;">
+GT3
+</td>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+other
+</td>
+<td style="text-align:left;">
+teacher
+</td>
+<td style="text-align:left;">
+home
+</td>
+<td style="text-align:left;">
+mother
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GP
+</td>
+<td style="text-align:left;">
+F
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:left;">
+U
+</td>
+<td style="text-align:left;">
+GT3
+</td>
+<td style="text-align:left;">
+T
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+teacher
+</td>
+<td style="text-align:left;">
+health
+</td>
+<td style="text-align:left;">
+reputation
+</td>
+<td style="text-align:left;">
+mother
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GP
+</td>
+<td style="text-align:left;">
+M
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:left;">
+U
+</td>
+<td style="text-align:left;">
+LE3
+</td>
+<td style="text-align:left;">
+T
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+health
+</td>
+<td style="text-align:left;">
+services
+</td>
+<td style="text-align:left;">
+course
+</td>
+<td style="text-align:left;">
+father
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:right;">
+14
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GP
+</td>
+<td style="text-align:left;">
+M
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:left;">
+U
+</td>
+<td style="text-align:left;">
+GT3
+</td>
+<td style="text-align:left;">
+T
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+teacher
+</td>
+<td style="text-align:left;">
+other
+</td>
+<td style="text-align:left;">
+course
+</td>
+<td style="text-align:left;">
+mother
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+11
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GP
+</td>
+<td style="text-align:left;">
+F
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:left;">
+U
+</td>
+<td style="text-align:left;">
+GT3
+</td>
+<td style="text-align:left;">
+T
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+health
+</td>
+<td style="text-align:left;">
+other
+</td>
+<td style="text-align:left;">
+home
+</td>
+<td style="text-align:left;">
+mother
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:right;">
+14
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GP
+</td>
+<td style="text-align:left;">
+F
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:left;">
+U
+</td>
+<td style="text-align:left;">
+GT3
+</td>
+<td style="text-align:left;">
+T
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+services
+</td>
+<td style="text-align:left;">
+services
+</td>
+<td style="text-align:left;">
+reputation
+</td>
+<td style="text-align:left;">
+mother
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:right;">
+14
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GP
+</td>
+<td style="text-align:left;">
+M
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:left;">
+U
+</td>
+<td style="text-align:left;">
+LE3
+</td>
+<td style="text-align:left;">
+T
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+health
+</td>
+<td style="text-align:left;">
+other
+</td>
+<td style="text-align:left;">
+home
+</td>
+<td style="text-align:left;">
+father
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">RPostgreSQL<span class="op">::</span><span class="kw">dbGetQuery</span>(<span class="dt">conn =</span> con,<span class="dt">statement =</span> <span class="st">&#39;select * from student where &quot;G3&quot;=4 OR &quot;Medu&quot;=4 LIMIT 10;&#39;</span>)</code></pre></div>
+<pre><code>##    school sex age address famsize Pstatus Medu Fedu     Mjob     Fjob
+## 1      GP   F  18       U     GT3       A    4    4  at_home  teacher
+## 2      GP   F  15       U     GT3       T    4    2   health services
+## 3      GP   M  16       U     LE3       T    4    3 services    other
+## 4      GP   F  17       U     GT3       A    4    4    other  teacher
+## 5      GP   F  15       U     GT3       T    4    4  teacher   health
+## 6      GP   M  15       U     LE3       T    4    4   health services
+## 7      GP   M  15       U     GT3       T    4    3  teacher    other
+## 8      GP   F  16       U     GT3       T    4    4   health    other
+## 9      GP   F  16       U     GT3       T    4    4 services services
+## 10     GP   M  16       U     LE3       T    4    3   health    other
+##        reason guardian traveltime studytime failures schoolsup famsup paid
+## 1      course   mother          2         2        0       yes     no   no
+## 2        home   mother          1         3        0        no    yes  yes
+## 3  reputation   mother          1         2        0        no    yes  yes
+## 4        home   mother          2         2        0       yes    yes   no
+## 5  reputation   mother          1         2        0        no    yes  yes
+## 6      course   father          1         1        0        no    yes  yes
+## 7      course   mother          2         2        0        no    yes  yes
+## 8        home   mother          1         1        0        no    yes   no
+## 9  reputation   mother          1         3        0        no    yes  yes
+## 10       home   father          1         1        0        no     no  yes
+##    activities nursery higher internet romantic famrel freetime goout Dalc
+## 1          no     yes    yes       no       no      4        3     4    1
+## 2         yes     yes    yes      yes      yes      3        2     2    1
+## 3         yes     yes    yes      yes       no      5        4     2    1
+## 4          no     yes    yes       no       no      4        1     4    1
+## 5          no     yes    yes      yes       no      3        3     3    1
+## 6         yes     yes    yes      yes       no      4        3     3    1
+## 7          no     yes    yes      yes       no      5        4     3    1
+## 8          no     yes    yes      yes       no      4        4     4    1
+## 9         yes     yes    yes      yes       no      3        2     3    1
+## 10        yes     yes    yes      yes       no      3        1     3    1
+##    Walc health absences G1 G2 G3
+## 1     1      3        6  5  6  6
+## 2     1      5        2 15 14 15
+## 3     2      5       10 15 15 15
+## 4     1      1        6  6  5  6
+## 5     2      2        0 10  8  9
+## 6     3      5        2 14 14 14
+## 7     2      3        2 10 10 11
+## 8     2      2        4 14 14 14
+## 9     2      2        6 13 14 14
+## 10    3      5        4  8 10 10</code></pre>
+<p><strong>NOT</strong></p>
+<p>Here we are looking at results where Fathers Education (Fedu) does not equal 4.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">RPostgreSQL<span class="op">::</span><span class="kw">dbGetQuery</span>(<span class="dt">conn =</span> con,<span class="dt">statement =</span> <span class="st">&#39;select * from student WHERE NOT &quot;Fedu&quot;=4 LIMIT 10;&#39;</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">select</span> * <span class="kw">from</span> student <span class="kw">WHERE</span> <span class="kw">NOT</span> <span class="ot">&quot;Fedu&quot;</span>=<span class="dv">4</span> <span class="kw">LIMIT</span> <span class="dv">10</span>;</code></pre></div>
+<div class="knitsql-table">
+<table>
+<caption>
+<span id="tab:unnamed-chunk-30">Table 5.5: </span>Displaying records 1 - 10
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+school
+</th>
+<th style="text-align:left;">
+sex
+</th>
+<th style="text-align:right;">
+age
+</th>
+<th style="text-align:left;">
+address
+</th>
+<th style="text-align:left;">
+famsize
+</th>
+<th style="text-align:left;">
+Pstatus
+</th>
+<th style="text-align:right;">
+Medu
+</th>
+<th style="text-align:right;">
+Fedu
+</th>
+<th style="text-align:left;">
+Mjob
+</th>
+<th style="text-align:left;">
+Fjob
+</th>
+<th style="text-align:left;">
+reason
+</th>
+<th style="text-align:left;">
+guardian
+</th>
+<th style="text-align:right;">
+traveltime
+</th>
+<th style="text-align:right;">
+studytime
+</th>
+<th style="text-align:right;">
+failures
+</th>
+<th style="text-align:left;">
+schoolsup
+</th>
+<th style="text-align:left;">
+famsup
+</th>
+<th style="text-align:left;">
+paid
+</th>
+<th style="text-align:left;">
+activities
+</th>
+<th style="text-align:left;">
+nursery
+</th>
+<th style="text-align:left;">
+higher
+</th>
+<th style="text-align:left;">
+internet
+</th>
+<th style="text-align:left;">
+romantic
+</th>
+<th style="text-align:right;">
+famrel
+</th>
+<th style="text-align:right;">
+freetime
+</th>
+<th style="text-align:right;">
+goout
+</th>
+<th style="text-align:right;">
+Dalc
+</th>
+<th style="text-align:right;">
+Walc
+</th>
+<th style="text-align:right;">
+health
+</th>
+<th style="text-align:right;">
+absences
+</th>
+<th style="text-align:right;">
+G1
+</th>
+<th style="text-align:right;">
+G2
+</th>
+<th style="text-align:right;">
+G3
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+GP
+</td>
+<td style="text-align:left;">
+F
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:left;">
+U
+</td>
+<td style="text-align:left;">
+GT3
+</td>
+<td style="text-align:left;">
+T
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+at_home
+</td>
+<td style="text-align:left;">
+other
+</td>
+<td style="text-align:left;">
+course
+</td>
+<td style="text-align:left;">
+father
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GP
+</td>
+<td style="text-align:left;">
+F
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:left;">
+U
+</td>
+<td style="text-align:left;">
+LE3
+</td>
+<td style="text-align:left;">
+T
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+at_home
+</td>
+<td style="text-align:left;">
+other
+</td>
+<td style="text-align:left;">
+other
+</td>
+<td style="text-align:left;">
+mother
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+10
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GP
+</td>
+<td style="text-align:left;">
+F
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:left;">
+U
+</td>
+<td style="text-align:left;">
+GT3
+</td>
+<td style="text-align:left;">
+T
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+health
+</td>
+<td style="text-align:left;">
+services
+</td>
+<td style="text-align:left;">
+home
+</td>
+<td style="text-align:left;">
+mother
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:right;">
+15
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GP
+</td>
+<td style="text-align:left;">
+F
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:left;">
+U
+</td>
+<td style="text-align:left;">
+GT3
+</td>
+<td style="text-align:left;">
+T
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+other
+</td>
+<td style="text-align:left;">
+other
+</td>
+<td style="text-align:left;">
+home
+</td>
+<td style="text-align:left;">
+father
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+10
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GP
+</td>
+<td style="text-align:left;">
+M
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:left;">
+U
+</td>
+<td style="text-align:left;">
+LE3
+</td>
+<td style="text-align:left;">
+T
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+services
+</td>
+<td style="text-align:left;">
+other
+</td>
+<td style="text-align:left;">
+reputation
+</td>
+<td style="text-align:left;">
+mother
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+15
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GP
+</td>
+<td style="text-align:left;">
+M
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:left;">
+U
+</td>
+<td style="text-align:left;">
+LE3
+</td>
+<td style="text-align:left;">
+T
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+other
+</td>
+<td style="text-align:left;">
+other
+</td>
+<td style="text-align:left;">
+home
+</td>
+<td style="text-align:left;">
+mother
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+11
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GP
+</td>
+<td style="text-align:left;">
+M
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:left;">
+U
+</td>
+<td style="text-align:left;">
+LE3
+</td>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+services
+</td>
+<td style="text-align:left;">
+other
+</td>
+<td style="text-align:left;">
+home
+</td>
+<td style="text-align:left;">
+mother
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:right;">
+19
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GP
+</td>
+<td style="text-align:left;">
+F
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:left;">
+U
+</td>
+<td style="text-align:left;">
+GT3
+</td>
+<td style="text-align:left;">
+T
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+services
+</td>
+<td style="text-align:left;">
+other
+</td>
+<td style="text-align:left;">
+reputation
+</td>
+<td style="text-align:left;">
+father
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+12
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GP
+</td>
+<td style="text-align:left;">
+M
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:left;">
+U
+</td>
+<td style="text-align:left;">
+GT3
+</td>
+<td style="text-align:left;">
+T
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+teacher
+</td>
+<td style="text-align:left;">
+other
+</td>
+<td style="text-align:left;">
+course
+</td>
+<td style="text-align:left;">
+mother
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+11
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GP
+</td>
+<td style="text-align:left;">
+M
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:left;">
+U
+</td>
+<td style="text-align:left;">
+GT3
+</td>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+other
+</td>
+<td style="text-align:left;">
+other
+</td>
+<td style="text-align:left;">
+home
+</td>
+<td style="text-align:left;">
+other
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:right;">
+16
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Combining AND, OR, NOT</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">RPostgreSQL<span class="op">::</span><span class="kw">dbGetQuery</span>(<span class="dt">conn =</span> con,<span class="dt">statement =</span> <span class="st">&#39;select * from student where &quot;G3&quot;&gt;=10 OR &quot;Medu&quot;=4 LIMIT 10;&#39;</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">select</span> * <span class="kw">from</span> student <span class="kw">where</span> <span class="ot">&quot;G3&quot;</span>&gt;=<span class="dv">10</span> <span class="kw">OR</span> <span class="ot">&quot;Medu&quot;</span>=<span class="dv">4</span> <span class="kw">LIMIT</span> <span class="dv">10</span>;</code></pre></div>
+<div class="knitsql-table">
+<table>
+<caption>
+<span id="tab:unnamed-chunk-32">Table 5.6: </span>Displaying records 1 - 10
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+school
+</th>
+<th style="text-align:left;">
+sex
+</th>
+<th style="text-align:right;">
+age
+</th>
+<th style="text-align:left;">
+address
+</th>
+<th style="text-align:left;">
+famsize
+</th>
+<th style="text-align:left;">
+Pstatus
+</th>
+<th style="text-align:right;">
+Medu
+</th>
+<th style="text-align:right;">
+Fedu
+</th>
+<th style="text-align:left;">
+Mjob
+</th>
+<th style="text-align:left;">
+Fjob
+</th>
+<th style="text-align:left;">
+reason
+</th>
+<th style="text-align:left;">
+guardian
+</th>
+<th style="text-align:right;">
+traveltime
+</th>
+<th style="text-align:right;">
+studytime
+</th>
+<th style="text-align:right;">
+failures
+</th>
+<th style="text-align:left;">
+schoolsup
+</th>
+<th style="text-align:left;">
+famsup
+</th>
+<th style="text-align:left;">
+paid
+</th>
+<th style="text-align:left;">
+activities
+</th>
+<th style="text-align:left;">
+nursery
+</th>
+<th style="text-align:left;">
+higher
+</th>
+<th style="text-align:left;">
+internet
+</th>
+<th style="text-align:left;">
+romantic
+</th>
+<th style="text-align:right;">
+famrel
+</th>
+<th style="text-align:right;">
+freetime
+</th>
+<th style="text-align:right;">
+goout
+</th>
+<th style="text-align:right;">
+Dalc
+</th>
+<th style="text-align:right;">
+Walc
+</th>
+<th style="text-align:right;">
+health
+</th>
+<th style="text-align:right;">
+absences
+</th>
+<th style="text-align:right;">
+G1
+</th>
+<th style="text-align:right;">
+G2
+</th>
+<th style="text-align:right;">
+G3
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+GP
+</td>
+<td style="text-align:left;">
+F
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:left;">
+U
+</td>
+<td style="text-align:left;">
+GT3
+</td>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+at_home
+</td>
+<td style="text-align:left;">
+teacher
+</td>
+<td style="text-align:left;">
+course
+</td>
+<td style="text-align:left;">
+mother
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GP
+</td>
+<td style="text-align:left;">
+F
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:left;">
+U
+</td>
+<td style="text-align:left;">
+LE3
+</td>
+<td style="text-align:left;">
+T
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+at_home
+</td>
+<td style="text-align:left;">
+other
+</td>
+<td style="text-align:left;">
+other
+</td>
+<td style="text-align:left;">
+mother
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+10
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GP
+</td>
+<td style="text-align:left;">
+F
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:left;">
+U
+</td>
+<td style="text-align:left;">
+GT3
+</td>
+<td style="text-align:left;">
+T
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+health
+</td>
+<td style="text-align:left;">
+services
+</td>
+<td style="text-align:left;">
+home
+</td>
+<td style="text-align:left;">
+mother
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:right;">
+15
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GP
+</td>
+<td style="text-align:left;">
+F
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:left;">
+U
+</td>
+<td style="text-align:left;">
+GT3
+</td>
+<td style="text-align:left;">
+T
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+other
+</td>
+<td style="text-align:left;">
+other
+</td>
+<td style="text-align:left;">
+home
+</td>
+<td style="text-align:left;">
+father
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+10
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GP
+</td>
+<td style="text-align:left;">
+M
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:left;">
+U
+</td>
+<td style="text-align:left;">
+LE3
+</td>
+<td style="text-align:left;">
+T
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+services
+</td>
+<td style="text-align:left;">
+other
+</td>
+<td style="text-align:left;">
+reputation
+</td>
+<td style="text-align:left;">
+mother
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+15
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GP
+</td>
+<td style="text-align:left;">
+M
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:left;">
+U
+</td>
+<td style="text-align:left;">
+LE3
+</td>
+<td style="text-align:left;">
+T
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+other
+</td>
+<td style="text-align:left;">
+other
+</td>
+<td style="text-align:left;">
+home
+</td>
+<td style="text-align:left;">
+mother
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+11
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GP
+</td>
+<td style="text-align:left;">
+F
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:left;">
+U
+</td>
+<td style="text-align:left;">
+GT3
+</td>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+other
+</td>
+<td style="text-align:left;">
+teacher
+</td>
+<td style="text-align:left;">
+home
+</td>
+<td style="text-align:left;">
+mother
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GP
+</td>
+<td style="text-align:left;">
+M
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:left;">
+U
+</td>
+<td style="text-align:left;">
+LE3
+</td>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+services
+</td>
+<td style="text-align:left;">
+other
+</td>
+<td style="text-align:left;">
+home
+</td>
+<td style="text-align:left;">
+mother
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:right;">
+19
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GP
+</td>
+<td style="text-align:left;">
+M
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:left;">
+U
+</td>
+<td style="text-align:left;">
+GT3
+</td>
+<td style="text-align:left;">
+T
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+other
+</td>
+<td style="text-align:left;">
+other
+</td>
+<td style="text-align:left;">
+home
+</td>
+<td style="text-align:left;">
+mother
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+15
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GP
+</td>
+<td style="text-align:left;">
+F
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:left;">
+U
+</td>
+<td style="text-align:left;">
+GT3
+</td>
+<td style="text-align:left;">
+T
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+teacher
+</td>
+<td style="text-align:left;">
+health
+</td>
+<td style="text-align:left;">
+reputation
+</td>
+<td style="text-align:left;">
+mother
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+no
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+9
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>The AND OR</strong></p>
+<p>Here we tell SQL that we want all the G3 grades that are &gt; 10 and also that the school should be GP OR Fedu should equal 4. The backslashes allow us to escape the single quotes that are necessary when using RPostgresql syntax.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">RPostgreSQL<span class="op">::</span><span class="kw">dbGetQuery</span>(<span class="dt">conn =</span> con,<span class="dt">statement =</span> <span class="st">&#39;select * from student where &quot;G3&quot;&gt;=10 AND school=</span><span class="ch">\&#39;</span><span class="st">GP</span><span class="ch">\&#39;</span><span class="st"> OR &quot;Fedu&quot;=4 LIMIT 10;&#39;</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">select</span> <span class="ot">&quot;G3&quot;</span>, school, <span class="ot">&quot;Fedu&quot;</span> <span class="kw">from</span> student <span class="kw">where</span> <span class="ot">&quot;G3&quot;</span>&gt;=<span class="dv">10</span> <span class="kw">AND</span> school=<span class="st">&#39;GP&#39;</span> <span class="kw">OR</span> <span class="ot">&quot;Fedu&quot;</span>=<span class="dv">4</span> <span class="kw">LIMIT</span> <span class="dv">10</span>;</code></pre></div>
+<div class="knitsql-table">
+<table>
+<caption>
+<span id="tab:unnamed-chunk-34">Table 5.7: </span>Displaying records 1 - 10
+</caption>
+<thead>
+<tr>
+<th style="text-align:right;">
+G3
+</th>
+<th style="text-align:left;">
+school
+</th>
+<th style="text-align:right;">
+Fedu
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:left;">
+GP
+</td>
+<td style="text-align:right;">
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:left;">
+GP
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:left;">
+GP
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:left;">
+GP
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:left;">
+GP
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:left;">
+GP
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:left;">
+GP
+</td>
+<td style="text-align:right;">
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:left;">
+GP
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:left;">
+GP
+</td>
+<td style="text-align:right;">
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:left;">
+GP
+</td>
+<td style="text-align:right;">
+4
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>The double NOT or NOT NOT</strong></p>
+<p>Here we tell SQL that we want to return all values where Fedu and Medu are not equal to 4.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">RPostgreSQL<span class="op">::</span><span class="kw">dbGetQuery</span>(<span class="dt">conn =</span> con,<span class="dt">statement =</span> <span class="st">&#39;select * from student WHERE NOT &quot;Medu&quot;=4 OR &quot;Fedu&quot;=4 LIMIT 10;&#39;</span>)</code></pre></div>
+<pre><code>##    school sex age address famsize Pstatus Medu Fedu     Mjob    Fjob
+## 1      GP   F  18       U     GT3       A    4    4  at_home teacher
+## 2      GP   F  17       U     GT3       T    1    1  at_home   other
+## 3      GP   F  15       U     LE3       T    1    1  at_home   other
+## 4      GP   F  16       U     GT3       T    3    3    other   other
+## 5      GP   M  16       U     LE3       T    2    2    other   other
+## 6      GP   F  17       U     GT3       A    4    4    other teacher
+## 7      GP   M  15       U     LE3       A    3    2 services   other
+## 8      GP   M  15       U     GT3       T    3    4    other   other
+## 9      GP   F  15       U     GT3       T    4    4  teacher  health
+## 10     GP   F  15       U     GT3       T    2    1 services   other
+##        reason guardian traveltime studytime failures schoolsup famsup paid
+## 1      course   mother          2         2        0       yes     no   no
+## 2      course   father          1         2        0        no    yes   no
+## 3       other   mother          1         2        3       yes     no  yes
+## 4        home   father          1         2        0        no    yes  yes
+## 5        home   mother          1         2        0        no     no   no
+## 6        home   mother          2         2        0       yes    yes   no
+## 7        home   mother          1         2        0        no    yes  yes
+## 8        home   mother          1         2        0        no    yes  yes
+## 9  reputation   mother          1         2        0        no    yes  yes
+## 10 reputation   father          3         3        0        no    yes   no
+##    activities nursery higher internet romantic famrel freetime goout Dalc
+## 1          no     yes    yes       no       no      4        3     4    1
+## 2          no      no    yes      yes       no      5        3     3    1
+## 3          no     yes    yes      yes       no      4        3     2    2
+## 4          no     yes    yes       no       no      4        3     2    1
+## 5          no     yes    yes      yes       no      4        4     4    1
+## 6          no     yes    yes       no       no      4        1     4    1
+## 7          no     yes    yes      yes       no      4        2     2    1
+## 8         yes     yes    yes      yes       no      5        5     1    1
+## 9          no     yes    yes      yes       no      3        3     3    1
+## 10        yes     yes    yes      yes       no      5        2     2    1
+##    Walc health absences G1 G2 G3
+## 1     1      3        6  5  6  6
+## 2     1      3        4  5  5  6
+## 3     3      3       10  7  8 10
+## 4     2      5        4  6 10 10
+## 5     1      3        0 12 12 11
+## 6     1      1        6  6  5  6
+## 7     1      1        0 16 18 19
+## 8     1      5        0 14 15 15
+## 9     2      2        0 10  8  9
+## 10    1      4        4 10 12 12</code></pre>
+</div>
+<div id="insert-queries" class="section level2">
+<h2><span class="header-section-number">5.4</span> Insert Queries</h2>
+<p>Insert into PostgreSQL using RPostgreSQL</p>
+<ul>
+<li>Inserting a single list of values into PostgreSQL.</li>
+</ul>
+<p>Ok, now lets INSERT some data into our PostgreSQL database. We will want to develop a query string and send this to the database via dbSendQuery() from the RPostgreSQL package.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">query &lt;-<span class="st"> </span>(<span class="st">&#39;INSERT INTO detroit VALUES (1974,265, 14, 500.5, 200.5, 215.98, 93.457, 558724, 538.123, 133.96, 2.75, 117.187, 8.564, 39.17, 306.18);&#39;</span>)
+
+table&lt;-<span class="st"> </span>RPostgreSQL<span class="op">::</span><span class="kw">dbSendQuery</span>(<span class="dt">conn =</span> con,<span class="dt">statement =</span> query)</code></pre></div>
+<p>Then when we call the new data we can see that we have updated the row (observations) to 14 and have added the data in our query.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">RPostgreSQL<span class="op">::</span><span class="kw">dbGetQuery</span>(<span class="dt">conn =</span> con,<span class="dt">statement =</span> <span class="st">&#39;select * from detroit;&#39;</span>)</code></pre></div>
+<pre><code>##    Year FTP UEMP   MAN     LIC      GR CLEAR     WM  NMAN   GOV   HE
+## 1  1961 320 11.0 455.5  178.50  215.98  93.4 558724 538.1 133.9 2.98
+## 2  1962 320  7.0 480.2  156.41  180.48  88.5 538584 547.6 137.6 3.09
+## 3  1963 320  5.2 506.1  198.02  209.57  94.4 519171 562.8 143.6 3.23
+## 4  1964 320  4.3 535.8  222.10  231.67  92.0 500457 591.0 150.3 3.33
+## 5  1965 320  3.5 576.0  301.92  297.65  91.0 482418 626.1 164.3 3.46
+## 6  1966 320  3.2 601.7  391.22  367.62  87.4 465029 659.8 179.5 3.60
+## 7  1967 320  4.1 577.3  665.56  616.54  88.3 448267 686.2 187.5 3.73
+## 8  1968 320  3.9 596.9 1131.21 1029.75  86.1 432109 699.6 195.4 2.91
+## 9  1969 320  3.6 613.5  837.60  786.23  79.0 416533 729.9 210.3 4.25
+## 10 1970 320  7.1 569.3  794.90  713.77  73.9 401518 757.8 223.8 4.47
+## 11 1971 320  8.4 548.8  817.74  750.43  63.4 387046 755.3 227.7 5.04
+## 12 1972 320  7.7 563.4  583.17 1027.38  62.5 373095 787.0 230.9 5.47
+## 13 1973 320  6.3 609.3  709.59  666.50  58.9 359647 819.8 230.2 5.76
+##        WE   HOM   ACC    ASR
+## 1  117.18  8.60 39.17 306.18
+## 2  134.02  8.90 40.27 315.16
+## 3  141.68  8.52 45.31 277.53
+## 4  147.98  8.89 49.51 234.07
+## 5  159.85 13.07 55.05 230.84
+## 6  157.19 14.57 53.90 217.99
+## 7  155.29 21.36 50.62 286.11
+## 8  131.75 28.03 51.47 291.59
+## 9  178.74 31.49 49.16 320.39
+## 10 178.30 37.39 45.80 323.03
+## 11 209.54 46.26 44.54 357.38
+## 12 240.05 47.24 41.03 422.07
+## 13 258.05 52.33 44.17 473.01</code></pre>
+</div>
+<div id="update-queries" class="section level2">
+<h2><span class="header-section-number">5.5</span> Update Queries</h2>
+<p>The <strong>UPDATE</strong> command allows us to update the records in a table to new data. We may want to do this in our Shiny Applications or from the Rstudio console itself. Here we will update the last column that we inserted into the <strong>Detroit</strong> table as we had an error in column 2.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">RPostgreSQL<span class="op">::</span><span class="kw">dbGetQuery</span>(<span class="dt">conn =</span> con,<span class="dt">statement =</span> <span class="st">&#39;UPDATE detroit SET &quot;FTP&quot;=320;&#39;</span>)</code></pre></div>
+<pre><code>## data frame with 0 columns and 0 rows</code></pre>
+<p>Now let’s check our results.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">RPostgreSQL<span class="op">::</span><span class="kw">dbGetQuery</span>(<span class="dt">conn =</span> con,<span class="dt">statement =</span> <span class="st">&#39;select * from detroit;&#39;</span>)</code></pre></div>
+<pre><code>##    Year FTP UEMP   MAN     LIC      GR CLEAR     WM  NMAN   GOV   HE
+## 1  1961 320 11.0 455.5  178.50  215.98  93.4 558724 538.1 133.9 2.98
+## 2  1962 320  7.0 480.2  156.41  180.48  88.5 538584 547.6 137.6 3.09
+## 3  1963 320  5.2 506.1  198.02  209.57  94.4 519171 562.8 143.6 3.23
+## 4  1964 320  4.3 535.8  222.10  231.67  92.0 500457 591.0 150.3 3.33
+## 5  1965 320  3.5 576.0  301.92  297.65  91.0 482418 626.1 164.3 3.46
+## 6  1966 320  3.2 601.7  391.22  367.62  87.4 465029 659.8 179.5 3.60
+## 7  1967 320  4.1 577.3  665.56  616.54  88.3 448267 686.2 187.5 3.73
+## 8  1968 320  3.9 596.9 1131.21 1029.75  86.1 432109 699.6 195.4 2.91
+## 9  1969 320  3.6 613.5  837.60  786.23  79.0 416533 729.9 210.3 4.25
+## 10 1970 320  7.1 569.3  794.90  713.77  73.9 401518 757.8 223.8 4.47
+## 11 1971 320  8.4 548.8  817.74  750.43  63.4 387046 755.3 227.7 5.04
+## 12 1972 320  7.7 563.4  583.17 1027.38  62.5 373095 787.0 230.9 5.47
+## 13 1973 320  6.3 609.3  709.59  666.50  58.9 359647 819.8 230.2 5.76
+##        WE   HOM   ACC    ASR
+## 1  117.18  8.60 39.17 306.18
+## 2  134.02  8.90 40.27 315.16
+## 3  141.68  8.52 45.31 277.53
+## 4  147.98  8.89 49.51 234.07
+## 5  159.85 13.07 55.05 230.84
+## 6  157.19 14.57 53.90 217.99
+## 7  155.29 21.36 50.62 286.11
+## 8  131.75 28.03 51.47 291.59
+## 9  178.74 31.49 49.16 320.39
+## 10 178.30 37.39 45.80 323.03
+## 11 209.54 46.26 44.54 357.38
+## 12 240.05 47.24 41.03 422.07
+## 13 258.05 52.33 44.17 473.01</code></pre>
+</div>
+<div id="delete-queries" class="section level2">
+<h2><span class="header-section-number">5.6</span> Delete Queries</h2>
+<p>We can also delete specific rows based on the data of one or more columns. This will allow us to remove mistakes we have made in our tables without having to <strong>DROP</strong> the entire table itself.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">RPostgreSQL<span class="op">::</span><span class="kw">dbGetQuery</span>(<span class="dt">conn =</span> con,<span class="dt">statement =</span> <span class="st">&#39;DELETE FROM detroit WHERE &quot;Year&quot;=1974;&#39;</span>)</code></pre></div>
+<pre><code>## data frame with 0 columns and 0 rows</code></pre>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="select-from-table.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="rpostgresql-in-shiny-applications.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["SQLQueries.pdf", "SQLQueries.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

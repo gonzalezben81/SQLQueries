@@ -1,0 +1,29 @@
+#  Select * FROM table;
+
+Here we are querying the entire table and bringing back all of the values.
+
+```{r,echo=FALSE}
+library(DBI)
+library(RPostgreSQL)
+DBI::dbDriver('PostgreSQL')
+require(RPostgreSQL)
+# 
+drv=dbDriver("PostgreSQL")
+con=dbConnect(drv,dbname='rstudio',host='www.rgonzodb.us',port=5432,user='ben',password='Charlene81')
+```
+
+**Teachers**
+```{sql connection=con}
+SELECT * FROM teachers
+```
+
+**Detroit**
+```{sql connection=con}
+SELECT * FROM detroit
+```
+
+**Student**
+```{sql connection=con}
+SELECT * FROM student
+```
+

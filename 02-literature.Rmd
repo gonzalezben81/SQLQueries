@@ -1,0 +1,133 @@
+# Introduction
+
+This is a reference book on how to user PostgreSQL in Rstudio utilizing the DBI and RPostgresql packages.
+
+Note: All queries are limited to ten rows to allow for easier reading and understanding.
+
+After searching the internet for exstensive books I was unable to find anything to my liking. Working with databases is key to get things done in R, Rstudio, Python, and R-Shiny. So I wanted to write my own book aimed at practical knowledge on how to do things and hopefully create a good work out of the hodgepodge of junk that is out there.
+
+First things first. You will want to ensure that you have enabled remote access to your PostgreSQL database.
+
+How to allow remote access to PostgreSQL database:
+
+You will need to change some configurations in the postgresql.conf file on your server.
+
+```bash
+find \ -name "postgresql.conf"
+
+sudo nano /var/lib/pgsql/PSQLVERSION/data/postgresql.conf
+```
+
+
+The you will want to change the following line listen_addresses = ‘localhost’ to listen_addresses = ‘*’:
+
+Search for it using CTRL + W
+```bash
+listen_addresses = 'localhost'
+```
+
+```bash
+listen_addresses = '*'
+```
+
+Next restart your PostgreSQL database.
+
+```bash
+sudo systemctl postgresql restart
+```
+You should still receive an error as you also need to configure the pg_hba.conf file as well.
+
+```bash
+find \ -name "pg_hba.conf"
+
+sudo nano /var/lib/pgsql/PSQLVERSION/data/pg_hba.conf
+```
+
+Now place the followin at the very end of the file.
+
+```bash
+host    all             all              0.0.0.0/0                       md5
+host    all             all              ::/0                            md5
+
+```
+
+https://blog.bigbinary.com/2016/01/23/configure-postgresql-to-allow-remote-connection.html
+
+Step 1: Install the necessary packages to check the connection.
+
+```{r,eval=FALSE}
+library(RPostgreSQL)
+library(DBI)
+```
+
+
+Step 2: We want to connect to our PostgreSQL database itself. I recommend utilizing Digital Ocean to host your own cloud base PostgreSQL instance. Here is a link to a tutorial on their website to build your own if you have not done so before. Digital Ocean PostgreSQL. In the below code chunk you will want to update the repsective values with the values from your database instance.
+
+```{r,eval=FALSE}
+library(DBI)
+library(RPostgreSQL)
+DBI::dbDriver('PostgreSQL')
+require(RPostgreSQL)
+drv=dbDriver("PostgreSQL")
+con=dbConnect(drv,dbname=dbname,host=dbhost,port=5432,user=dbuser,password=dbpassword)
+```
+
+
+
+
++ **db** name will be the database you are wanting to use.
++ **host** will be the host your database is on. Either your localhost or the url to your database.
++ **port** By default the port will be 5432 for postgresql.
++ **user** will be the username for the database you are connecting to
++ **password** will be the database password you use when connecting to postgresql Next we can list the tables that are available in our database
+
+This is the DBI way to do it in Rstudio.
+
+```{r}
+dbListTables(conn = con)
+```
+
+This is the SQL syntax way to do it. Here we can see the tablename,tableowner, and the tablespace along with other housekeeping items that may be of interest to us.
+
+
+```{sql,connection=con}
+SELECT * FROM pg_catalog.pg_tables;
+```
+
+Select * FROM table;
+
+Here we are querying the entire table and bringing back all of the values.
+
+**Teachers Dataset**
+
+```{sql connection=con}
+SELECT * FROM teachers
+```
+
+
+**Detroit Dataset**
+
+```{sql connection=con}
+SELECT * FROM detroit
+```
+
+**Student Dataset**
+
+```{sql connection=con}
+SELECT * FROM student
+```
+
+Next we can list the tables that are available in our database
+
+This is the DBI way to do it in Rstudio.
+
+```{r}
+DBI::dbListTables(conn = con)
+```
+
+The following is the SQL syntax way to do it. Here we can see the *tablename,tableowner*, and the *tablespace* along with other housekeeping items that may be of interest to us.
+
+```{sql connection=con}
+SELECT * FROM pg_catalog.pg_tables;
+```
+

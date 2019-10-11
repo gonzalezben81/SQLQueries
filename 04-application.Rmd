@@ -1,0 +1,180 @@
+#  General Queries
+
+Here we will make a few queries to the database that are general in nature. General queries are ones where we want to select particular columns and also where we want to remove or delete items from the database.
+
+## Distinct Queries
+
+Here we will use distinct to look at the distinct values in a particular column. This allows us to get a high-level overview of what our data looks like.
+
+**Teachers**
+
+```{sql connection=con}
+SELECT distinct school from teachers;
+```
+
+
+**Student**
+```{sql connection=con}
+select distinct school from student
+```
+
+Next we can order our data in a particular way as well.
+
+Notice that there is something very peculiar about this SQL statement. If we write it out as a normal SQL statement it will not work.
+
+```{r}
+RPostgreSQL::dbGetQuery(conn = con,statement = 'select Medu from student;')
+```
+
+Instead we are required to utilize quotes around the column names since it is Camelbacked: e.g. Medu vs. medu
+
+```{r}
+RPostgreSQL::dbGetQuery(conn = con, statement = "select distinct \"Medu\" from student;")
+```
+
+```{r}
+RPostgreSQL::dbGetQuery(conn = con,statement = 'select "school","G3" from student order by "G3" desc limit 10;')
+
+```
+
+## WHERE Queries
+
+Where Clause in SQL
+
+Here we are select the schools and the G3 grade where G3 is greater than 15.
+
+```{r}
+RPostgreSQL::dbGetQuery(conn = con, statement = "select \"school\",\"G3\" from student where \"G3\">15 limit 10;")
+
+```
+
+Here we are select the schools and the G3 grade where G3 is equal to 4. Utilizing the operators >,<,= allows us to filter our data and retrieve the data we want to look at.
+
+```{r,eval=FALSE}
+RPostgreSQL::dbGetQuery(conn = con,statement = 'select "school","G3" from student where "G3"=4;')
+
+```
+
+## AND, OR, NOT Queries
+
+SQL Queries with **And, OR, NOT**.
+
+**AND**
+
+Here we only return one row where G3 = 4 and Medu = 4.
+
+```{sql connection=con}
+select * from student where "G3"=4 AND "Medu"=4;
+```
+
+
+```{r,echo=FALSE}
+table<- RPostgreSQL::dbGetQuery(conn = con,statement = 'select * from student where "G3"=4 AND "Medu"=4;')
+
+kableExtra::kable(table)
+```
+
+**OR**
+
+Here we return 10 rows where G3 = 4 or Mother’s Education = 4. This helps us to filter and sort data when we want to find something in particular.
+
+```{sql connection=con}
+select * from student where "G3"=4 OR "Medu"=4 LIMIT 10;
+```
+
+
+```{r}
+RPostgreSQL::dbGetQuery(conn = con,statement = 'select * from student where "G3"=4 OR "Medu"=4 LIMIT 10;')
+
+```
+
+**NOT**
+
+Here we are looking at results where Fathers Education (Fedu) does not equal 4.
+
+```{r,eval=FALSE}
+RPostgreSQL::dbGetQuery(conn = con,statement = 'select * from student WHERE NOT "Fedu"=4 LIMIT 10;')
+
+```
+
+```{sql connection=con}
+select * from student WHERE NOT "Fedu"=4 LIMIT 10;
+```
+
+**Combining AND, OR, NOT**
+
+```{r,eval=FALSE}
+RPostgreSQL::dbGetQuery(conn = con,statement = 'select * from student where "G3">=10 OR "Medu"=4 LIMIT 10;')
+
+```
+
+```{sql connection=con}
+select * from student where "G3">=10 OR "Medu"=4 LIMIT 10;
+```
+
+
+**The AND OR**
+
+Here we tell SQL that we want all the G3 grades that are > 10 and also that the school should be GP OR Fedu should equal 4. The backslashes allow us to escape the single quotes that are necessary when using RPostgresql syntax.
+
+```{r,eval=FALSE}
+RPostgreSQL::dbGetQuery(conn = con,statement = 'select * from student where "G3">=10 AND school=\'GP\' OR "Fedu"=4 LIMIT 10;')
+```
+
+```{sql connection=con}
+select "G3", school, "Fedu" from student where "G3">=10 AND school='GP' OR "Fedu"=4 LIMIT 10;
+```
+
+
+
+
+**The double NOT or NOT NOT**
+
+Here we tell SQL that we want to return all values where Fedu and Medu are not equal to 4.
+```{r}
+RPostgreSQL::dbGetQuery(conn = con,statement = 'select * from student WHERE NOT "Medu"=4 OR "Fedu"=4 LIMIT 10;')
+```
+
+## Insert Queries
+
+Insert into PostgreSQL using RPostgreSQL
+
++ Inserting a single list of values into PostgreSQL.
+
+Ok, now lets INSERT some data into our PostgreSQL database. We will want to develop a query string and send this to the database via dbSendQuery() from the RPostgreSQL package.
+
+```{r,eval=FALSE}
+query <- ('INSERT INTO detroit VALUES (1974,265, 14, 500.5, 200.5, 215.98, 93.457, 558724, 538.123, 133.96, 2.75, 117.187, 8.564, 39.17, 306.18);')
+
+table<- RPostgreSQL::dbSendQuery(conn = con,statement = query)
+```
+
+
+Then when we call the new data we can see that we have updated the row (observations) to 14 and have added the data in our query.
+
+```{r}
+RPostgreSQL::dbGetQuery(conn = con,statement = 'select * from detroit;')
+```
+
+## Update Queries
+
+The **UPDATE** command allows us to update the records in a table to new data. We may want to do this in our Shiny Applications or from the Rstudio console itself. Here we will update the last column that we inserted into the **Detroit** table as we had an error in column 2.
+
+```{r}
+RPostgreSQL::dbGetQuery(conn = con,statement = 'UPDATE detroit SET "FTP"=320;')
+```
+
+Now let's check our results.
+
+```{r}
+RPostgreSQL::dbGetQuery(conn = con,statement = 'select * from detroit;')
+```
+
+## Delete Queries
+
+We can also delete specific rows based on the data of one or more columns. This will allow us to remove mistakes we have made in our tables without having to **DROP** the entire table itself.
+
+```{r,eval=FALSE}
+RPostgreSQL::dbGetQuery(conn = con,statement = 'DELETE FROM detroit WHERE "Year"=1974;')
+```
+

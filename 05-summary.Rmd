@@ -1,0 +1,39 @@
+# RPostgreSQL in Shiny Applications
+
+Here we will show you how to use RPostgreSQL within your R-Shiny or Shiny application. This can be somewhat frustrating as you will need to take advantage of the paste() and paste0() base commands in R to send your text or numeric input data to the query itself.
+
+```{r,eval=FALSE}
+paste(x = name ,sep = "-",collapse = "")
+
+paste0()
+```
+
+## Insert Query from Shiny Application
+
+For us to send a query to the PostgreSQL database we will need to paste the query together. We will begin by constructing the usual **INSERT INTO TABLENAME** and then insert the respective values into the query as well. We will need to utilize the **input$value1** replacing whatever **input$name** we have for the value we want to insert into the databale when the query is sent. We can simply paste this into a new variable called **qry** and assign it and pass this **qry** to the **dbSendQuery** function in our application. As the number of columns increase so will the number of values as well.
+
+```{r,eval=FALSE}
+      qry = paste0("INSERT INTO table (column1,column2)",
+                   "VALUES ('",paste(input$value1,"'",",","'",input$value2,"')"))
+
+    dbSendQuery(conn = con, statement = qry)
+```
+
+
+**Note: We have each value surrounded by the single back ticks ’ and also we have the values seperated by a comma as well.**
+
+
+## Write Table Query from Shiny Application to the Database
+
+Here you can take a dataframe and write it directly to the database using the **dbWriteTable** command. This allows us to write a dataframe directlyt to the table in question. You will need the dataframe column names to match the ones that are in the table in the database. The number of columns must match as well. You will not be able to write a dataframe with more columns than are in the table, but you will be able to write a dataframe that has less columns than are in the table in the database.
+
+```{r,eval=FALSE}
+dbWriteTable(conn = con,name = 'table_name',value = table_value)
+
+RPostgreSQL::postgresqlWriteTable(con = con,name = 'table_name',value = table_value,overwrite = TRUE)
+
+RPostgreSQL::postgresqlWriteTable(con = con,name = 'table_name',value = table_value,append = TRUE)
+```
+
+
+Above we have 3 distinct ways to write the data to the table in the database. The last two allow us to either **overwrite** or **append** the data to the table. Depending on our application needs we will be able to do one or the other.
