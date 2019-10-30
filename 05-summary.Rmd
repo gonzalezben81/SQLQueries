@@ -25,7 +25,7 @@ For us to send a query to the PostgreSQL database we will need to paste the quer
 
 ## Write Table Query from Shiny Application to the Database
 
-Here you can take a dataframe and write it directly to the database using the **dbWriteTable** command. This allows us to write a dataframe directlyt to the table in question. You will need the dataframe column names to match the ones that are in the table in the database. The number of columns must match as well. You will not be able to write a dataframe with more columns than are in the table, but you will be able to write a dataframe that has less columns than are in the table in the database.
+Here you can take a dataframe and write it directly to the database using the **dbWriteTable** command. This allows us to write a dataframe directly to the table in question. You will need the dataframe column names to match the ones that are in the table in the database. The number of columns must match as well. You will not be able to write a dataframe with more columns than are in the table, but you will be able to write a dataframe that has less columns than are in the table in the database.
 
 ```{r,eval=FALSE}
 dbWriteTable(conn = con,name = 'table_name',value = table_value)
@@ -37,3 +37,14 @@ RPostgreSQL::postgresqlWriteTable(con = con,name = 'table_name',value = table_va
 
 
 Above we have 3 distinct ways to write the data to the table in the database. The last two allow us to either **overwrite** or **append** the data to the table. Depending on our application needs we will be able to do one or the other.
+
+
+## Update Table Query from Shiny Application to the Database
+
+This allows us to **UPDATE** one column at a time or several columns at once. Depending on the structure of the table we have. 
+
+```{r,eval=FALSE}
+      qry = paste0("UPDATE table SET  column1 = '",paste(input$value1,"')"))
+
+    dbSendQuery(conn = con, statement = qry)
+```

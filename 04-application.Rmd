@@ -26,7 +26,7 @@ Notice that there is something very peculiar about this SQL statement. If we wri
 RPostgreSQL::dbGetQuery(conn = con,statement = 'select Medu from student;')
 ```
 
-Instead we are required to utilize quotes around the column names since it is Camelbacked: e.g. Medu vs. medu
+Instead we are required to utilize quotes around the column names since it is Camelbacked: e.g. Medu vs. medu. We also are required to utilize the **\** to escapte the quotes around the column name as well. 
 
 ```{r}
 RPostgreSQL::dbGetQuery(conn = con, statement = "select distinct \"Medu\" from student;")
@@ -178,3 +178,113 @@ We can also delete specific rows based on the data of one or more columns. This 
 RPostgreSQL::dbGetQuery(conn = con,statement = 'DELETE FROM detroit WHERE "Year"=1974;')
 ```
 
+## SQL Count, Avg, & Sum
+
+
+We can **count** how many **distinct** opponents there are that the Dodgers played against in the table. 
+
+```{r}
+RPostgreSQL::dbGetQuery(conn = con,statement = 'SELECT  COUNT(DISTINCT(opponent)) from dodgers;')
+```
+
+
+We can average the temp across all of the games played. We can see that the average temp for all games played is around 73&deg;F
+
+```{r}
+RPostgreSQL::dbGetQuery(conn = con,statement = 'SELECT AVG(temp) from dodgers;')
+```
+
+Here we can get the average temp from all games played in the month of April.
+
+```{r}
+RPostgreSQL::dbGetQuery(conn = con,statement = "SELECT AVG(temp) from dodgers WHERE month='APR';")
+```
+
+Here we can also get the average temp of all games played in October. Looks like the average temp was 83&deg;F
+
+```{r}
+RPostgreSQL::dbGetQuery(conn = con,statement = "SELECT AVG(temp) from dodgers WHERE month='OCT';")
+```
+
+Seems close to 84&deg;F if we round up. So, let's go ahead and do that by adding the **ROUND()** argument to our SQL statement.
+
+```{r}
+RPostgreSQL::dbGetQuery(conn = con,statement = "SELECT ROUND(AVG(temp),0) from dodgers WHERE month='OCT';")
+```
+
+
+## LIKE
+
+### WILDCARDS
+
+***
+
+
+| Symbol          | Description                          |Example                            |
+| :-------------: |:-------------------------------------| ---------------------------------:|
+| %               | zero or more characters              |bl% finds bl, black, blue, and blob|
+| _               | single character                     | h_t finds hot, hat, and hit       |
+| []              | any single character within brackets | h[oa]t finds hot and hat          |
+|^                | any character not in brackets        |h[^oa]t finds hit                  |
+|-                |a range of characters                 |	c[a-b]t finds cat and cbt        |
+
+***
+
+We can utilize the **Wildcards** to look up different results in a table. Here we are utilzing the dodgers table. 
+
+Here we can look at all of the opponents who start with a **P** in the dodgers table by utilizing the following syntax. This looks for any opponent who starts with a capital **P**. 
+
+```{r}
+RPostgreSQL::dbGetQuery(conn = con,statement = "SELECT opponent from dodgers where opponent LIKE 'P%';")
+```
+
+
+Or we can look at all of the opponents who end with an **s**. Which looks to be nearly eveyrone in the team. For brevity sake we will only look at the head of the table. 
+
+```{r}
+opponents_s <- RPostgreSQL::dbGetQuery(conn = con,statement = "SELECT opponent from dodgers where opponent LIKE '%s';")
+
+head(opponents_s)
+```
+
+## NOT LIKE
+
+Here we look at all of the opponents who do not end in a **s**. Which seems to eliminate nearly everyone but one team: The **White Sox**.
+
+```{r}
+RPostgreSQL::dbGetQuery(conn = con,statement = "SELECT opponent from dodgers where opponent NOT LIKE '%s';")
+```
+
+## LIKE any position
+
+Here we look at the teams that have **nal** in any position in their name. Of course our results return the **Cardinals & Nationals**.
+
+```{r}
+RPostgreSQL::dbGetQuery(conn = con,statement = "SELECT opponent from dodgers where opponent LIKE '%nal%';")
+```
+
+Here we can use the **_** to find any opponent that starts with any letter but has **et** and any character after it. Which will return **Mets** for us. 
+
+```{r}
+RPostgreSQL::dbGetQuery(conn = con, statement = "SELECT opponent from dodgers where opponent LIKE '_et%';")
+```
+
+```{r}
+RPostgreSQL::dbGetQuery(conn = con, statement = "SELECT opponent from dodgers where opponent LIKE 'M[ae]ts';")
+```
+
+## Between
+
+Here we can select all of when the temperature was between 60 and 70&deg;F.
+
+```{r}
+temp <- RPostgreSQL::dbGetQuery(conn = con,statement = "SELECT temp from dodgers where temp BETWEEN 60 AND 70;")
+head(temp)
+```
+
+We can also utilize this to subset other columns where the criteria matches the temp. We are only selecting the opponents and temp that was between 60 and 70&deg;F.
+
+```{r}
+opponent_temp <- RPostgreSQL::dbGetQuery(conn = con,statement = "SELECT opponent,temp from dodgers where temp BETWEEN 60 AND 70;")
+head(opponent_temp)
+```
